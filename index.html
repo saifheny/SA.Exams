@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>نظام الامتحانات الآمن — مؤسسة SA</title>
+    <meta name="description" content="نظام امتحانات إلكتروني آمن مع حماية متقدمة ضد الغش، تابع لمؤسسة SA">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 10L6 22l26 12 26-12L32 10z' fill='%235d5fef'/%3E%3Cpath d='M14 26.5V44c0 4 8 10 18 10s18-6 18-10V26.5' fill='%238b5cf6'/%3E%3Cpath d='M32 22v14' stroke='%23f59e0b' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='22' r='3' fill='%23f59e0b'/%3E%3Cpath d='M30 36h4l-1 8h-2l-1 8z' fill='%23f59e0b'/%3E%3C/svg%3E">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            background: #0f0f13;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            font-family: var(--font);
+        }
+        .bg-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.5;
+            z-index: 0;
+            animation: pulse 10s ease-in-out infinite alternate;
+        }
+        .blob-1 { top: -10%; right: -10%; width: 500px; height: 500px; background: rgba(93, 95, 239, 0.4); }
+        .blob-2 { bottom: -10%; left: -10%; width: 600px; height: 600px; background: rgba(139, 92, 246, 0.3); }
+        
+        @keyframes pulse {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-20px, 20px); }
+        }
+
+        .auth-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 440px;
+            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.1);
+            text-align: center;
+            animation: fadeUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) both;
+        }
+
+        .auth-logo {
+            width: 72px; height: 72px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 8px 32px var(--accent-glow);
+            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both 0.2s;
+        }
+
+        .auth-logo svg {
+            width: 40px; height: 40px;
+            stroke: #fff;
+        }
+
+        .auth-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .auth-sub {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn-google {
+            width: 100%;
+            padding: 14px;
+            background: #fff;
+            color: #0f0f13;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(255,255,255,0.1);
+        }
+        .btn-google:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255,255,255,0.2);
+        }
+
+        .role-setup {
+            display: none;
+            animation: fadeUp 0.4s ease both;
+        }
+
+        .field-group {
+            text-align: right;
+            margin-bottom: 1.25rem;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 8px;
+        }
+
+        .custom-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: var(--font);
+            transition: all 0.2s;
+        }
+        .custom-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(93, 95, 239, 0.2);
+            outline: none;
+        }
+
+        .role-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .role-card {
+            background: rgba(0,0,0,0.2);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 16px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .role-card.active {
+            border-color: var(--accent);
+            background: rgba(93, 95, 239, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(93, 95, 239, 0.2);
+        }
+        .role-card i {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.6);
+            transition: all 0.2s;
+        }
+        .role-card.active i {
+            color: var(--accent);
+        }
+        .role-card span {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .institution-tag {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .institution-tag strong {
+            color: rgba(255,255,255,0.8);
+            font-weight: 800;
+        }
+        .policy-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .policy-links a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .policy-links a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        /* Loading overlay for the whole page */
+        #global-loader {
+            position: fixed; inset: 0; background: #0f0f13; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        .spinner {
+            width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent); border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="global-loader"><div class="spinner"></div></div>
+
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+
+    <div class="auth-container">
+        <div class="auth-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+        </div>
+        
+        <div id="view-login">
+            <h1 class="auth-title">نظام الامتحانات الآمن</h1>
+            <p class="auth-sub">سجل دخولك للبدء باستخدام المنصة بأمان</p>
+            
+            <button class="btn-google" id="btn-login">
+                <svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
+                        <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/>
+                        <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/>
+                        <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/>
+                        <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/>
+                    </g>
+                </svg>
+                تسجيل الدخول بجوجل
+            </button>
+        </div>
+
+        <div id="view-setup" class="role-setup">
+            <h1 class="auth-title">استكمال البيانات</h1>
+            <p class="auth-sub">أدخل بياناتك لتحديد هويتك في المنصة</p>
+            
+            <div class="field-group">
+                <label>نوع الحساب</label>
+                <div class="role-cards">
+                    <div class="role-card active" data-role="student">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        <span>طالب</span>
+                    </div>
+                    <div class="role-card" data-role="teacher">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                        <span>معلم</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label>الاسم الكامل (ثنائي أو ثلاثي)</label>
+                <input type="text" id="user-fullname" class="custom-input" placeholder="مثال: أحمد محمود">
+            </div>
+
+            <button class="btn-submit" id="btn-save-profile">حفظ ومتابعة <i class="fa-solid fa-arrow-left" style="margin-right: 8px;"></i></button>
+        </div>
+
+        <div class="institution-tag">
+            <span>جميع الحقوق محفوظة &copy; 2026. المنصة تابعة لـ <strong>مؤسسة SA</strong></span>
+            <div class="policy-links">
+                <a href="terms.html">الشروط والأحكام</a>
+                <span>•</span>
+                <a href="policy.html">سياسة الخصوصية</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>

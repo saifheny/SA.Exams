@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>نظام الامتحانات الآمن — الطالب</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 10L6 22l26 12 26-12L32 10z' fill='%235d5fef'/%3E%3Cpath d='M14 26.5V44c0 4 8 10 18 10s18-6 18-10V26.5' fill='%238b5cf6'/%3E%3Cpath d='M32 22v14' stroke='%23f59e0b' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='22' r='3' fill='%23f59e0b'/%3E%3Cpath d='M30 36h4l-1 8h-2l-1 8z' fill='%23f59e0b'/%3E%3C/svg%3E">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-right">
+            <div class="header-logo">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+            </div>
+            <div class="header-info">
+                <div class="header-title">نظام الامتحانات الآمن</div>
+                <div class="header-sub">بوابة الطالب</div>
+            </div>
+        </div>
+        <div class="header-right-end">
+            <div class="teacher-chip" id="student-chip">
+                <div class="teacher-chip-av" id="student-chip-av"></div>
+                <span id="student-name-label">طالب</span>
+                <i class="fa-solid fa-chevron-down" style="font-size:0.65rem;opacity:0.5;"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="main" style="max-width: 600px;">
+        <div class="page-head" style="margin-top: 2rem;">
+            <div>
+                <h2 class="page-title" id="welcome-title">مرحباً بك!</h2>
+                <p class="page-desc">المنصة الرسمية للامتحانات التابعة لمؤسسة SA</p>
+            </div>
+        </div>
+
+        <div class="q-block" style="text-align: center; padding: 3rem 2rem;">
+            <div style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h3 style="margin-bottom: 1rem;">هل لديك كود امتحان أو رابط؟</h3>
+            <p style="color: var(--text-2); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                إذا كان المعلم قد أرسل لك رابط الامتحان، يمكنك الضغط عليه مباشرة وسيفتح هنا تلقائياً، أو يمكنك إدخال كود الامتحان أدناه:
+            </p>
+            
+            <div style="display: flex; gap: 10px; max-width: 400px; margin: 0 auto;">
+                <input type="text" id="exam-code-input" class="field font-en" placeholder="أدخل كود الامتحان" style="text-align: center; font-weight: bold; letter-spacing: 2px;">
+                <button class="btn btn-accent" id="btn-enter-exam" style="flex-shrink: 0;">دخول</button>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="js/student_portal.js"></script>
+</body>
+</html>
